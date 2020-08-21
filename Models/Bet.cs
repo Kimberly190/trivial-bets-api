@@ -8,6 +8,8 @@ namespace TrivialBetsApi.Models
 
         public int Amount { get; set; }
 
+        public int Payout { get; set; }
+
         public long PlayerId { get; set; }
         [ForeignKey("PlayerId")]
         public Player Player { get; set; }
