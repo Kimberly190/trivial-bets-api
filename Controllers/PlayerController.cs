@@ -41,6 +41,22 @@ namespace TrivialBetsApi.Controllers
             return player;
         }
 
+        // GET: api/Player/ForGameRoom/5
+        [HttpGet("ForGameRoom/{gameRoomId}")]
+        public async Task<ActionResult<IEnumerable<Player>>> GetPlayerForGameRoom(long gameRoomId)
+        {
+            var players = await (from p in _context.Player
+                                where p.GameRoomId == gameRoomId
+                                select p).ToListAsync();
+            
+            if (!players.Any())
+            {
+                return NotFound();
+            }
+
+            return players;
+        }
+
         // PUT: api/Player/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.

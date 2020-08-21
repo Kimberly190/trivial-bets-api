@@ -41,6 +41,22 @@ namespace TrivialBetsApi.Controllers
             return answer;
         }
 
+        // GET: api/Answer/ForQuestion/5
+        [HttpGet("ForQuestion/{questionId}")]
+        public async Task<ActionResult<IEnumerable<Answer>>> GetAnswerForQuestion(long questionId)
+        {
+            var answers = await (from a in _context.Answer
+                                where a.QuestionId == questionId
+                                select a).ToListAsync();
+            
+            if (!answers.Any())
+            {
+                return NotFound();
+            }
+
+            return answers;
+        }
+
         // PUT: api/Answer/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
