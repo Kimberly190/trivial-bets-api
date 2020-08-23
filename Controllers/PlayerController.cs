@@ -47,11 +47,17 @@ namespace TrivialBetsApi.Controllers
         {
             var players = await (from p in _context.Player
                                 where p.GameRoomId == gameRoomId
+                                orderby p.Id descending
                                 select p).ToListAsync();
             
             if (!players.Any())
             {
                 return NotFound();
+            }
+
+            for (int i = 0; i < players.Count; i++)
+            {
+                players[i].PlayerNumber = i + 1;
             }
 
             return players;

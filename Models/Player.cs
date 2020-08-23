@@ -6,6 +6,10 @@ namespace TrivialBetsApi.Models
     {
         public long Id { get; set; }
 
+        // User-friendly ordering (player 1, player 2, etc.), derived from ID
+        [NotMapped]
+        public int PlayerNumber { get; set; }
+
         public string Name { get; set; }
 
         public bool IsHost { get; set; }
