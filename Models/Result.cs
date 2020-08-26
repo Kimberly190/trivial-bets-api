@@ -5,14 +5,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TrivialBetsApi.Models
 {
+    [NotMapped]
     public class Result
     {
-        public bool IsBestGuess { get; set; }
+        public bool IsWinningGuess { get; set; }
 
         public int Credit { get; set; }
 
         public long PlayerId { get; set; }
-        [ForeignKey("PlayerId")]
-        public Player Player { get; set; }
     }
 }

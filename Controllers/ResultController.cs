@@ -57,7 +57,7 @@ namespace TrivialBetsApi.Controllers
                 from g in winningGuesses
                 select new Result
                 {
-                    IsBestGuess = true,
+                    IsWinningGuess = true,
                     Credit = BEST_GUESS_CREDIT,
                     PlayerId = g.PlayerId
                 }).Concat(
@@ -66,7 +66,15 @@ namespace TrivialBetsApi.Controllers
                     where bet.AnswerId == bg.Id
                     select new Result
                     {
-                        Credit = bet.Amount * bet.Payout,
+                        Credit = bet.Amount * bet.Payout - 1, // -1: Don't credit the default chip
+                        PlayerId = bet.PlayerId
+                    }
+                ).Concat(
+                    from bet in bets
+                    where !winningGuesses.Any(wg => wg.Id == bet.AnswerId)
+                    select new Result
+                    {
+                        Credit = -1 * bet.Amount + 1, // +1: Don't debit the default chip
                         PlayerId = bet.PlayerId
                     }
                 ).ToArray();
