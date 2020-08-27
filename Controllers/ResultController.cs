@@ -30,6 +30,7 @@ namespace TrivialBetsApi.Controllers
 
             var answers = await (from answer in _context.Answer
                                  where answer.QuestionId == questionId
+                                 orderby answer.PlayerId
                                  select answer).ToListAsync();
             
             var bets = await (from bet in _context.Bet

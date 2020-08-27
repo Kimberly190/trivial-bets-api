@@ -47,7 +47,7 @@ namespace TrivialBetsApi.Controllers
         {
             var players = await (from p in _context.Player
                                 where p.GameRoomId == gameRoomId
-                                orderby p.Id descending
+                                orderby p.Id
                                 select p).ToListAsync();
             
             if (!players.Any())
