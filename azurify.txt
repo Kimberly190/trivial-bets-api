@@ -3,6 +3,11 @@ az group create --name tBetsResourceGroup --location "East US"
 az appservice plan create --name tBetsAppServicePlan --resource-group tBetsResourceGroup --sku FREE
 az webapp create --resource-group tBetsResourceGroup --plan tBetsAppServicePlan --name trivial-bets --deployment-local-git
 
+az webapp cors add --resource-group tBetsResourceGroup --name trivial-bets --allowed-origins 'https://trivial-bets.stackblitz.io'
+az webapp cors add --resource-group tBetsResourceGroup --name trivial-bets --allowed-origins 'https://trivial-bets-v1.stackblitz.io'
+(az webapp cors add --resource-group tBetsResourceGroup --name trivial-bets --allowed-origins 'http://localhost:4200')
+
+
 note:
 https://deploy_user_kz190@trivial-bets.scm.azurewebsites.net/trivial-bets.git
 
@@ -10,10 +15,7 @@ proj cmd:
 git remote add azure https://deploy_user_kz190@trivial-bets.scm.azurewebsites.net/trivial-bets.git
 git push azure master
 
-https://trivial-bets.azurewebsites.net/api/Question
-https://trivial-bets.azurewebsites.net/api/Answer
+https://trivial-bets.azurewebsites.net/api/v1/Question
+https://trivial-bets.azurewebsites.net/api/v2/Answer
 etc.
-
-az webapp cors add --resource-group tBetsResourceGroup --name trivial-bets --allowed-origins 'https://trivial-bets.stackblitz.io'
-(az webapp cors add --resource-group tBetsResourceGroup --name trivial-bets --allowed-origins 'http://localhost:4200')
 

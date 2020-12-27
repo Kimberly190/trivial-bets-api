@@ -9,7 +9,9 @@ using TrivialBetsApi.Models;
 
 namespace TrivialBetsApi.Controllers
 {
-    [Route("api/[controller]")]
+    [ApiVersion( "1.0" )]
+    [ApiVersion( "2.0" )]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class GameRoomController : ControllerBase
     {
