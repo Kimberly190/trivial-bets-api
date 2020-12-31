@@ -13,6 +13,8 @@ namespace TrivialBetsApi.Models
         [ForeignKey("GameRoomId")]
         public GameRoom GameRoom { get; set; }
 
+        public int Rank { get; set; }
+
         public ICollection<Answer> Answers { get; set; }
     }
 }

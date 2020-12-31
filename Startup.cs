@@ -27,6 +27,14 @@ namespace TrivialBetsApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+#if DEBUG
+            services.AddCors(options => options.AddPolicy("AngularCorsPolicy", builder =>
+            {
+                builder.WithOrigins("http://localhost:4200")
+                    .AllowCredentials().AllowAnyMethod().AllowAnyHeader();
+            }));
+#endif
+
             services.AddApiVersioning();
 
             services.AddDbContext<AppDbContext>(options =>
@@ -38,6 +46,10 @@ namespace TrivialBetsApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+#if DEBUG
+            app.UseCors("AngularCorsPolicy");
+#endif
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

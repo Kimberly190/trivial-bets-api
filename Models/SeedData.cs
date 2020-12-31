@@ -65,7 +65,8 @@ namespace TrivialBetsApi.Models
                 new Question
                 {
                     GameRoom = gameRoom.Entity,
-                    CorrectAnswer = 45
+                    CorrectAnswer = 45,
+                    Rank = 1
                 }
             );
 
@@ -147,7 +148,8 @@ namespace TrivialBetsApi.Models
                 new Question
                 {
                     GameRoom = gameRoom.Entity,
-                    CorrectAnswer = 20
+                    CorrectAnswer = 20,
+                    Rank = 2
                 }
             );
 
@@ -229,7 +231,8 @@ namespace TrivialBetsApi.Models
                 new Question
                 {
                     GameRoom = gameRoom.Entity,
-                    CorrectAnswer = 45
+                    CorrectAnswer = 45,
+                    Rank = 3
                 }
             );
 

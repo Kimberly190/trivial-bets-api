@@ -103,6 +103,18 @@ namespace TrivialBetsApi.Controllers
             return gameRoom;
         }
 
+        // GET: api/GameRoom/{gameRoomId}/Question/{rank}
+        [HttpGet("{gameRoomId}/Question/{rank}")]
+        public async Task<ActionResult<Question>> GetGameRoomQuestion(long gameRoomId, int rank)
+        {
+            var question = await _context.Question.FirstOrDefaultAsync(
+                q => q.GameRoomId == gameRoomId && q.Rank == rank
+            );
+
+            // Even if not found, return null rather than 404 to facilitate retry.
+            return question;
+        }
+
         private bool GameRoomExists(long id)
         {
             return _context.GameRoom.Any(e => e.Id == id);
