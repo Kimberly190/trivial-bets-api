@@ -45,24 +45,10 @@ namespace TrivialBetsApi.Controllers
 
         // GET: api/Player/ForGameRoom/5
         [HttpGet("ForGameRoom/{gameRoomId}")]
-        public async Task<ActionResult<IEnumerable<Player>>> GetPlayerForGameRoom(long gameRoomId)
+        public ActionResult GetPlayerForGameRoom(long gameRoomId)
         {
-            var players = await (from p in _context.Player
-                                where p.GameRoomId == gameRoomId
-                                orderby p.Id
-                                select p).ToListAsync();
-            
-            if (!players.Any())
-            {
-                return NotFound();
-            }
-
-            for (int i = 0; i < players.Count; i++)
-            {
-                players[i].PlayerNumber = i + 1;
-            }
-
-            return players;
+            //TODO update old version
+            return Redirect($"~/api/v2/GameRoom/{gameRoomId}/Player");
         }
 
         // PUT: api/Player/5
@@ -103,6 +89,14 @@ namespace TrivialBetsApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Player>> PostPlayer(Player player)
         {
+            var gameRoom = _context.GameRoom.Find(player.GameRoomId);
+            //TODO test:
+            if (gameRoom == null)
+                return new NotFoundObjectResult("Game Room not found.");
+            //TODO test:
+            if (_context.Question.Any(q => q.GameRoomId == gameRoom.Id))
+                return new BadRequestObjectResult("Sorry, this game is already in progress.");
+
             _context.Player.Add(player);
             await _context.SaveChangesAsync();
 

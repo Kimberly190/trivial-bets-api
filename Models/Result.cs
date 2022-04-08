@@ -10,8 +10,15 @@ namespace TrivialBetsApi.Models
     {
         public bool IsWinningGuess { get; set; }
 
+        public int BetAmount { get; set; }
+
+        //TODO can front end resolve this rather than returning it here?
+        public int Payout { get; set; }
+
         public int Credit { get; set; }
 
         public long PlayerId { get; set; }
+
+        public long AnswerId { get; set; }
     }
 }

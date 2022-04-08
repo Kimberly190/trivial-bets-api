@@ -56,31 +56,48 @@ namespace TrivialBetsApi.Controllers
                               where answer.Guess == closest.Guess
                               select answer;
 
-            return (
-                from g in winningGuesses
+            var bonuses = from g in winningGuesses
                 select new Result
                 {
                     IsWinningGuess = true,
                     Credit = BEST_GUESS_CREDIT,
-                    PlayerId = g.PlayerId
-                }).Concat(
-                    from bet in bets
+                    PlayerId = g.PlayerId,
+                    AnswerId = g.Id
+                };
+            
+            var credits = from bet in bets
                     from bg in winningGuesses
                     where bet.AnswerId == bg.Id
                     select new Result
                     {
-                        Credit = bet.Amount * bet.Payout - 1, // -1: Don't credit the default chip
-                        PlayerId = bet.PlayerId
-                    }
-                ).Concat(
-                    from bet in bets
+                        BetAmount = bet.Amount,
+                        Payout = bet.Payout,
+                        Credit = bet.Amount == 0 ? 0 : bet.Amount * bet.Payout - 1, // -1: Don't credit the default chip
+                        PlayerId = bet.PlayerId,
+                        AnswerId = bet.AnswerId
+                    };
+
+            var debits = from bet in bets
                     where !winningGuesses.Any(wg => wg.Id == bet.AnswerId)
                     select new Result
                     {
-                        Credit = -1 * bet.Amount + 1, // +1: Don't debit the default chip
-                        PlayerId = bet.PlayerId
-                    }
+                        BetAmount = bet.Amount,
+                        Payout = bet.Payout,
+                        Credit = bet.Amount == 0 ? 0 : -1 * bet.Amount + 1, // +1: Don't debit the default chip
+                        PlayerId = bet.PlayerId,
+                        AnswerId = bet.AnswerId
+                    };
+
+
+            var result = (
+                bonuses
+                ).Concat(
+                    credits
+                ).Concat(
+                    debits
                 ).ToArray();
+                
+            return result;
         }
     }
 }

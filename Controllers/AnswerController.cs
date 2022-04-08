@@ -47,6 +47,7 @@ namespace TrivialBetsApi.Controllers
         [HttpGet("ForQuestion/{questionId}")]
         public async Task<ActionResult<IEnumerable<Answer>>> GetAnswerForQuestion(long questionId)
         {
+            //TODO move and redirect
             var answers = await (from a in _context.Answer
                                 where a.QuestionId == questionId
                                 select a).ToListAsync();
@@ -97,6 +98,26 @@ namespace TrivialBetsApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Answer>> PostAnswer(Answer answer)
         {
+            var question = _context.Question.Find(answer.QuestionId);
+            if (question == null)
+                return new BadRequestObjectResult("Question not found.");
+            
+            //https://docs.microsoft.com/en-us/ef/core/querying/related-data/explicit
+            // _context.Entry(question).Collection(q => q.Answers).Load();
+            // foreach (var a in question.Answers)
+            // {
+            //     _context.Entry(a).Collection(a => a.Bets).Load();
+            // }
+            //alt
+            var qHasBets = _context.Entry(question).Collection(q => q.Answers)
+                .Query().Where(a => a.Bets.Any()).Any();
+
+            //TODO is this check even needed though?
+            //TODO test:
+            //if (question.Answers.Any(a => a.Bets.Any()))
+            if (qHasBets)
+                return new BadRequestObjectResult("Sorry, betting on this question is already in progress.");
+
             _context.Answer.Add(answer);
             await _context.SaveChangesAsync();
 
