@@ -40,7 +40,9 @@ namespace TrivialBetsApi
             services.AddDbContext<AppDbContext>(options =>
                 options.UseInMemoryDatabase("TrivialBets"));
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(o => o.JsonSerializerOptions.ReferenceHandler
+                    = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
