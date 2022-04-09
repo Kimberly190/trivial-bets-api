@@ -7,7 +7,7 @@ namespace TrivialBetsApi.Models
     {
         public long Id { get; set; }
 
-        public decimal CorrectAnswer { get; set; }
+        public decimal? CorrectAnswer { get; set; } = null;
 
         public long GameRoomId { get; set; }
         [ForeignKey("GameRoomId")]
