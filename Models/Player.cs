@@ -4,6 +4,8 @@ namespace TrivialBetsApi.Models
 {
     public class Player
     {
+        public const int MaxPlayersPerGame = 7; 
+
         public long Id { get; set; }
 
         // User-friendly ordering (player 1, player 2, etc.), derived from ID

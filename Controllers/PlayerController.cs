@@ -92,10 +92,13 @@ namespace TrivialBetsApi.Controllers
             var gameRoom = _context.GameRoom.Find(player.GameRoomId);
             //TODO test:
             if (gameRoom == null)
-                return new NotFoundObjectResult("Game Room not found.");
+                return new NotFoundObjectResult("Sorry, that Game Room was not found.");
             //TODO test:
             if (_context.Question.Any(q => q.GameRoomId == gameRoom.Id))
-                return new BadRequestObjectResult("Sorry, this game is already in progress.");
+                return new BadRequestObjectResult("Sorry, that game was already started.");
+            //TODO test: //TODO why is gameRoom.Players null, can load it?
+            if (_context.Player.Count(p => p.GameRoomId == gameRoom.Id) >= 7)
+                return new BadRequestObjectResult("Sorry, that game is full.");
 
             _context.Player.Add(player);
             await _context.SaveChangesAsync();
